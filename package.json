@@ -1,5 +1,5 @@
 {
-  "homepage": "https://wjekzzz.github.io/face-ai-lab",
+  "homepage": "https://wjekzzz-max.github.io/face-ai-lab",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
