@@ -9,6 +9,7 @@ function Camera({ mode, onImageCapture, onBack }) {
   const [error, setError] = useState(null)
   const [inputMode, setInputMode] = useState('camera')
   const [previewImage, setPreviewImage] = useState(null)
+  const [fileName, setFileName] = useState(null)
 
   useEffect(() => {
     if (inputMode === 'camera') {
@@ -39,7 +40,11 @@ function Camera({ mode, onImageCapture, onBack }) {
       setPreviewImage(null)
     } catch (err) {
       console.error('Camera access error:', err)
-      setError('카메라에 접근할 수 없습니다. 카메라 권한을 확인해주세요.')
+      // 에러 메시지 표시하지 않음, 검은 화면만 표시
+      setError(null)
+      if (videoRef.current) {
+        videoRef.current.srcObject = null
+      }
     }
   }
 
@@ -61,7 +66,7 @@ function Camera({ mode, onImageCapture, onBack }) {
       context.drawImage(video, 0, 0)
 
       const imageData = canvas.toDataURL('image/png')
-      onImageCapture(imageData)
+      onImageCapture(imageData, null) // 카메라 촬영은 파일명 없음
       stopCamera()
     }
   }
@@ -73,6 +78,9 @@ function Camera({ mode, onImageCapture, onBack }) {
         setError('이미지 파일만 업로드할 수 있습니다.')
         return
       }
+
+      // 파일명 저장
+      setFileName(file.name)
 
       const reader = new FileReader()
       reader.onload = (e) => {
@@ -100,42 +108,16 @@ function Camera({ mode, onImageCapture, onBack }) {
 
   const handleUploadConfirm = () => {
     if (previewImage) {
-      onImageCapture(previewImage)
+      // 이미지 데이터와 파일명을 함께 전달
+      onImageCapture(previewImage, fileName)
       setPreviewImage(null)
+      setFileName(null)
       if (fileInputRef.current) {
         fileInputRef.current.value = ''
       }
     }
   }
 
-  if (error && inputMode === 'camera') {
-    return (
-      <div className="camera-container">
-        <div className="camera-header">
-          <button onClick={onBack} className="btn btn-back">
-            ← 돌아가기
-          </button>
-          <h2>
-            {mode === 'celebrity' ? '닮은 연예인 찾기' : '미래 직업 추천'}
-          </h2>
-        </div>
-        <div className="error-message">
-          <p>{error}</p>
-          <div className="mode-toggle">
-            <button 
-              onClick={() => setInputMode('upload')} 
-              className="btn btn-secondary"
-            >
-              사진 업로드로 변경
-            </button>
-          </div>
-          <button onClick={onBack} className="btn btn-secondary">
-            돌아가기
-          </button>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="camera-container">
@@ -198,6 +180,7 @@ function Camera({ mode, onImageCapture, onBack }) {
                 <button
                   onClick={() => {
                     setPreviewImage(null)
+                    setFileName(null)
                     if (fileInputRef.current) {
                       fileInputRef.current.value = ''
                     }

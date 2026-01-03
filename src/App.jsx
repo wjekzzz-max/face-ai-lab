@@ -8,6 +8,7 @@ import './App.css'
 function App() {
   const [mode, setMode] = useState(null)
   const [capturedImage, setCapturedImage] = useState(null)
+  const [capturedFileName, setCapturedFileName] = useState(null)
   const [analysisResult, setAnalysisResult] = useState(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
 
@@ -18,15 +19,16 @@ function App() {
     setIsAnalyzing(false)
   }
 
-  const handleImageCapture = (imageData) => {
+  const handleImageCapture = (imageData, fileName = null) => {
     setCapturedImage(imageData)
+    setCapturedFileName(fileName)
     setAnalysisResult(null)
     setIsAnalyzing(true)
   }
 
   useEffect(() => {
     if (capturedImage && mode && isAnalyzing && !analysisResult) {
-      analyzeFace(capturedImage, mode)
+      analyzeFace(capturedImage, mode, capturedFileName)
         .then(result => {
           setAnalysisResult(result)
           setIsAnalyzing(false)
@@ -36,17 +38,19 @@ function App() {
           setIsAnalyzing(false)
         })
     }
-  }, [capturedImage, mode, isAnalyzing, analysisResult])
+  }, [capturedImage, mode, isAnalyzing, analysisResult, capturedFileName])
 
   const handleReset = () => {
     setMode(null)
     setCapturedImage(null)
+    setCapturedFileName(null)
     setAnalysisResult(null)
     setIsAnalyzing(false)
   }
 
   const handleBack = () => {
     setCapturedImage(null)
+    setCapturedFileName(null)
     setAnalysisResult(null)
     setIsAnalyzing(false)
   }

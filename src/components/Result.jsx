@@ -1,8 +1,55 @@
+import { useRef } from 'react'
+import html2canvas from 'html2canvas'
 import './Result.css'
 
 function Result({ mode, image, result, onReset, onBack }) {
+  const resultRef = useRef(null)
+
+  const handleSaveResult = async () => {
+    if (!resultRef.current) return
+
+    try {
+      // 결과 영역 캡처
+      const canvas = await html2canvas(resultRef.current, {
+        backgroundColor: '#ffffff',
+        scale: 2, // 고해상도
+        useCORS: true,
+        logging: false,
+        windowWidth: resultRef.current.scrollWidth,
+        windowHeight: resultRef.current.scrollHeight,
+      })
+
+      // Canvas를 Blob으로 변환
+      canvas.toBlob((blob) => {
+        if (!blob) return
+
+        // 다운로드 링크 생성
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        
+        // 파일명 생성 (날짜/시간 포함)
+        const now = new Date()
+        const dateStr = now.toISOString().slice(0, 19).replace(/[:-]/g, '').replace('T', '_')
+        const modeStr = mode === 'celebrity' ? '연예인' : '직업'
+        link.download = `AI분석결과_${modeStr}_${dateStr}.png`
+        
+        // 다운로드 실행
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        
+        // URL 정리
+        setTimeout(() => URL.revokeObjectURL(url), 100)
+      }, 'image/png')
+    } catch (error) {
+      console.error('결과 저장 중 오류 발생:', error)
+      alert('결과 저장 중 오류가 발생했습니다. 다시 시도해주세요.')
+    }
+  }
+
   return (
-    <div className="result-container">
+    <div className="result-container" ref={resultRef}>
       <div className="result-header">
         <button onClick={onBack} className="btn btn-back">
           ← 다시 촬영
@@ -34,6 +81,9 @@ function Result({ mode, image, result, onReset, onBack }) {
       </div>
 
       <div className="result-actions">
+        <button onClick={handleSaveResult} className="btn btn-save">
+          💾 결과 저장
+        </button>
         <button onClick={onReset} className="btn btn-primary">
           처음으로 돌아가기
         </button>

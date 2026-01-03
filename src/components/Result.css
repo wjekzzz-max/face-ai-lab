@@ -210,8 +210,11 @@
 }
 
 .result-actions {
-  text-align: center;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
   margin-top: 32px;
+  flex-wrap: wrap;
 }
 
 .btn-primary {
@@ -232,6 +235,29 @@
 }
 
 .btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 16px 48px;
+  font-size: 1.0625rem;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+}
+
+.btn-save:active {
   transform: translateY(0);
 }
 
