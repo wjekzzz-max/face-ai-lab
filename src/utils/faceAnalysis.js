@@ -48,16 +48,7 @@ const careerDatabase = [
 ]
 
 // 얼굴 특징 추출 (간단한 시뮬레이션)
-// 실제로는 TensorFlow.js나 Face-API.js를 사용하여 얼굴 특징을 추출합니다
 function extractFaceFeatures(imageData) {
-  // 실제 구현에서는 얼굴 인식 모델을 사용하여 다음을 추출:
-  // - 얼굴형 (둥근형, 각진형, 계란형, 타원형 등)
-  // - 표정 밝기 (밝은, 차분한 등)
-  // - 전체적인 이미지 분위기
-  
-  // 여기서는 이미지 데이터를 기반으로 랜덤하지만 일관된 특징을 생성
-  // 실제로는 얼굴 랜드마크와 표정 분석을 통해 결정됩니다
-  
   const hash = imageData.split('').reduce((acc, char) => {
     return ((acc << 5) - acc) + char.charCodeAt(0)
   }, 0)
@@ -99,7 +90,6 @@ function findSimilarCelebrities(faceFeatures) {
     }
   })
   
-  // 유사도가 높은 순으로 정렬하고 상위 1-3명 선택
   similarities.sort((a, b) => b.similarity - a.similarity)
   
   const count = Math.min(3, Math.max(1, Math.floor(Math.random() * 3) + 1))
@@ -125,7 +115,6 @@ function recommendCareers(faceFeatures) {
     }
   })
   
-  // 매칭이 높은 순으로 정렬하고 상위 3개 선택
   matches.sort((a, b) => b.matchCount - a.matchCount)
   
   const count = Math.min(3, Math.max(1, Math.floor(Math.random() * 3) + 1))
@@ -139,10 +128,8 @@ function recommendCareers(faceFeatures) {
 
 // 메인 분석 함수
 export async function analyzeFace(imageData, mode) {
-  // 얼굴 특징 추출
   const faceFeatures = extractFaceFeatures(imageData)
   
-  // 분석 시뮬레이션 (실제로는 얼굴 인식 모델이 시간이 걸림)
   await new Promise(resolve => setTimeout(resolve, 1500))
   
   if (mode === 'celebrity') {
@@ -159,4 +146,3 @@ export async function analyzeFace(imageData, mode) {
   
   throw new Error('Unknown mode')
 }
-
