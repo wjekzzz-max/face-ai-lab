@@ -1,3 +1,4 @@
+// Camera Component
 import { useRef, useEffect, useState } from 'react'
 import './Camera.css'
 

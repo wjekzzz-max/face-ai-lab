@@ -35,7 +35,7 @@ npm install
 npm run dev
 ```
 
-브라우저에서 `http://localhost:3000`으로 접속하세요.
+브라우저에서 표시된 로컬 주소(일반적으로 `http://localhost:5173`)로 접속하세요.
 
 ### 빌드
 ```bash
@@ -47,6 +47,7 @@ npm run build
 - React 18
 - Vite
 - TensorFlow.js (얼굴 특징 분석)
+- html2canvas (결과 저장 기능)
 
 ## 사용 방법
 

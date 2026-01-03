@@ -1,3 +1,4 @@
+// Mode Selection Component
 import './ModeSelection.css'
 
 function ModeSelection({ onModeSelect }) {

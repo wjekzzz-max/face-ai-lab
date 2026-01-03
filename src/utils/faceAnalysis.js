@@ -1,5 +1,6 @@
 // 얼굴 특징 분석 유틸리티
 // 실제 얼굴 특징을 기반으로 결과를 생성합니다
+// TensorFlow.js를 사용한 실제 얼굴 인식 기능 포함
 
 import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection'
 import * as tf from '@tensorflow/tfjs'

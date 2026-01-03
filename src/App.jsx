@@ -1,3 +1,4 @@
+// Main App Component
 import { useState, useEffect } from 'react'
 import ModeSelection from './components/ModeSelection'
 import Camera from './components/Camera'
